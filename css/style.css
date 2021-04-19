@@ -1,5 +1,5 @@
 body, html {
-  padding-top:2.5em;
+  padding-top:1.25em;
   margin:0;
   background-color:#fafafa;
 }
@@ -93,8 +93,8 @@ header p {
 
 .subtitle {
   font-family: "Merriweather";
-  padding-top:.3em;
-  font-size:0.55em;
+  padding-top:.5em;
+  font-size:0.70em;
   font-weight:500;
   color: #424242;
 }
@@ -191,7 +191,7 @@ body > div > article > div > section:last-child {
   margin:0;
   margin-top:0.15em;
   
-  width:85%;
+  width:95%;
   margin-left:1.5em;
 }
 
@@ -247,10 +247,9 @@ div.content-text.work-listing.education-listing > p:nth-child(2) {
   color: #424242;
   
   margin-left:3.25em;
+  padding-left:0.5em;
   
-  list-style-type: disc;
-  list-style-position: inside;
-  display: list-item;
+  border-left:1px solid #e0e0e0;
   
 }
 
@@ -276,7 +275,6 @@ div.content-text.work-listing.education-listing > p:nth-child(2) {
 
 .work-content, .education-content {
   padding-top: .75em;
-  page-break-inside: avoid;
 }
 
 section.content.education-content > div > div.content-cat {

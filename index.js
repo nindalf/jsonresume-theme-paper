@@ -1,12 +1,100 @@
 var fs = require("fs");
 var Handlebars = require("handlebars");
 
+function getMonth(startDateStr) {
+    switch (startDateStr.substr(5,2)) {
+    case '01':
+        return "January ";
+    case '02':
+        return "February ";
+    case '03':
+        return "March ";
+    case '04':
+        return "April ";
+    case '05':
+        return "May ";
+    case '06':
+        return "June ";
+    case '07':
+        return "July ";
+    case '08':
+        return "August ";
+    case '09':
+        return "September ";
+    case '10':
+        return "October ";
+    case '11':
+        return "November ";
+    case '12':
+        return "December ";
+    }
+}
+
 function render(resume) {
     // Load css and template
     var css = fs.readFileSync(__dirname + "/css/style.css", "utf-8");
     var template = fs.readFileSync(__dirname + "/resume.template", "utf-8");
     // Load print-specific css
     var print = fs.readFileSync(__dirname + "/css/print.css", "utf-8");
+
+    if (resume.work && resume.work.length) {
+        resume.workBool = true;
+        resume.work.map(function(w){
+            if (w.startDate) {
+                w.startDateYear = (w.startDate || "").substr(0,4);
+                w.startDateMonth = getMonth(w.startDate || "");
+
+            }
+            if(w.endDate) {
+                w.endDateYear = (w.endDate || "").substr(0,4);
+                w.endDateMonth = getMonth(w.endDate || "");
+            } else {
+                w.endDateYear = 'Present'
+            }
+            if (w.highlights) {
+                if (w.highlights[0]) {
+                    if (w.highlights[0] != "") {
+                        w.boolHighlights = true;
+                    }
+                }
+            }
+        });
+    }
+
+
+    if (resume.education && resume.education.length) {
+        if (resume.education[0].institution) {
+            resume.educationBool = true;
+            resume.education.map(function(e){
+                if( !e.area || !e.studyType ){
+                  e.educationDetail = (e.area == null ? '' : e.area) + (e.studyType == null ? '' : e.studyType);
+                } else {
+                  e.educationDetail = e.area + ", "+ e.studyType;
+                }
+                if (e.startDate) {
+                    e.startDateYear = e.startDate.substr(0,4);
+                    e.startDateMonth = getMonth(e.startDate || "");
+                } else {
+                    e.endDateMonth = "";
+                }
+                if (e.endDate) {
+                    e.endDateYear = e.endDate.substr(0,4);
+                    e.endDateMonth = getMonth(e.endDate || "")
+
+                } else {
+                    e.endDateYear = 'Present'
+                    e.endDateMonth = '';
+                }
+                if (e.courses) {
+                    if (e.courses[0]) {
+                        if (e.courses[0] != "") {
+                            e.educationCourses = true;
+                        }
+                    }
+                }
+            });
+        }
+    }
 
     // Register custom handlebars extensions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // foreach loops //
