@@ -54,6 +54,14 @@
                     <li>{{phone}}</li>
                   </ul>
                 {{/if}}
+                {{#each profiles}}
+                  {{#if network}}
+                    <ul>
+                      <li>{{network}}</li>
+                      <li><a href="{{url}}" target="_blank">{{username}}</a></li>
+                    </ul>
+                  {{/if}}
+                {{/each}}
               </div>
             </div>
           </section>
@@ -108,6 +116,10 @@
                         {{else}}
                           <p>{{startDateMonth}}{{startDateYear}} till Today</p>
                         {{/if}}
+                        {{#if duration}}
+                          <p> {{duration}} </p>
+                        {{/if}}
+                          
                       {{/if}}
                     </div>
                     <div class="content-text work-listing education-listing">
@@ -294,31 +306,6 @@
               </div>
             </section>
           {{/if}}
-          {{#resume.basics}}
-            <!-- PROFILES -->
-            {{#if profiles.length}}
-              <section class="content profiles">
-                <div class="row">
-                  <div class="content-cat">
-                    Profiles
-                  </div>
-                  <div class="content-text profiles-listing">
-                    <ul>
-                      {{#each profiles}}
-                        {{#if network}}
-                          <li>
-                            <a href="{{url}}" target="_blank">
-                              {{network}}
-                            </a>
-                          </li>
-                        {{/if}}
-                      {{/each}}
-                    </ul>
-                  </div>
-                </div>
-              </section>
-            {{/if}}
-          {{/resume.basics}}
 
           {{#if resume.interests.length}}
             <section class="content">

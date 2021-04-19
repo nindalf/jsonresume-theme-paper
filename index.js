@@ -1,5 +1,6 @@
 var fs = require("fs");
 var Handlebars = require("handlebars");
+var date = require("date-fns")
 
 function getMonth(startDateStr) {
     switch (startDateStr.substr(5,2)) {
@@ -30,6 +31,27 @@ function getMonth(startDateStr) {
     }
 }
 
+function getDuration(startDate, endDate) {
+    const diffMonths = date.differenceInMonths(endDate, startDate);
+    const months = diffMonths % 12;
+    const years = (diffMonths - months) / 12;
+
+    let result = "";
+    if (years > 1) {
+        result += years.toString() + "years"
+    }
+    if (years == 1) {
+        result += years.toString() + "year"
+    }
+    if (months > 1){
+        result += ', ' + months.toString() + "months"
+    }
+    if (months == 1){
+        result += ', ' + months.toString() + "month"
+    }
+    return result;
+}
+
 function render(resume) {
     // Load css and template
     var css = fs.readFileSync(__dirname + "/css/style.css", "utf-8");
@@ -40,17 +62,22 @@ function render(resume) {
     if (resume.work && resume.work.length) {
         resume.workBool = true;
         resume.work.map(function(w){
+            let startDate = new Date();
+            let endDate = new Date();
             if (w.startDate) {
                 w.startDateYear = (w.startDate || "").substr(0,4);
                 w.startDateMonth = getMonth(w.startDate || "");
+                startDate = date.parse(w.startDate, 'yyyy-MM-dd', new Date());
 
             }
             if(w.endDate) {
                 w.endDateYear = (w.endDate || "").substr(0,4);
                 w.endDateMonth = getMonth(w.endDate || "");
+                endDate = date.parse(w.endDate, 'yyyy-MM-dd', new Date());
             } else {
                 w.endDateYear = 'Present'
             }
+            w.duration = getDuration(startDate, endDate);
             if (w.highlights) {
                 if (w.highlights[0]) {
                     if (w.highlights[0] != "") {
